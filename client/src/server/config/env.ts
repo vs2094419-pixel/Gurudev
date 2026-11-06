@@ -26,7 +26,7 @@ export const env = {
    */
   trustProxy: process.env.TRUST_PROXY === "1",
   clientUrl: process.env.CLIENT_URL ?? "http://localhost:3000",
-  databaseUrl: required("DATABASE_URL"),
+  databaseUrl: process.env.DATABASE_URL ?? "",
   jwt: {
     secret: jwtSecret(),
     expiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
@@ -41,9 +41,9 @@ export const env = {
   mail: {
     /** console (default: logs emails) | resend | smtp. See lib/mailer.ts. */
     provider: process.env.MAIL_PROVIDER ?? "console",
-    from: process.env.MAIL_FROM ?? "Label Apsáre <support@apsaredesigner.in>",
+    from: process.env.MAIL_FROM ?? "Gurudev InfoTech <info@gurudevinfotech.com>",
     /** Where contact-form notifications go. */
-    adminEmail: process.env.ADMIN_NOTIFY_EMAIL ?? "support@apsaredesigner.in",
+    adminEmail: process.env.ADMIN_NOTIFY_EMAIL ?? "info@gurudevinfotech.com",
     resendApiKey: process.env.RESEND_API_KEY ?? "",
     smtp: {
       host: process.env.SMTP_HOST ?? "smtp.titan.email",

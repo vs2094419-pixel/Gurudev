@@ -22,40 +22,26 @@ import {
   FolderIcon,
   HistoryIcon,
   ImageIcon,
-  MailIcon,
   MenuIcon,
-  ReceiptIcon,
-  SearchIcon,
   SettingsIcon,
   StarIcon,
-  TicketIcon,
-  UsersIcon,
 } from "./icons";
 import { cx, focusRing } from "./styles";
 
 export const ADMIN_NAV = [
   { group: "Overview", items: [{ label: "Dashboard", href: "/admin/dashboard", icon: DashboardIcon }] },
   {
-    group: "Catalogue",
+    group: "Brand Partners",
     items: [
-      { label: "Products", href: "/admin/products", icon: BoxIcon },
-      { label: "Categories", href: "/admin/categories", icon: FolderIcon },
-      { label: "Reviews", href: "/admin/reviews", icon: StarIcon },
+      { label: "Hardware Partners", href: "/admin/hardware", icon: BoxIcon },
+      { label: "Networking Brands", href: "/admin/networking", icon: FolderIcon },
+      { label: "Software Vendors", href: "/admin/softwares", icon: StarIcon },
     ],
   },
   {
-    group: "Sales",
+    group: "Media & Content",
     items: [
-      { label: "Orders", href: "/admin/orders", icon: ReceiptIcon },
-      { label: "Customers", href: "/admin/customers", icon: UsersIcon },
-      { label: "Coupons", href: "/admin/coupons", icon: TicketIcon },
-    ],
-  },
-  {
-    group: "Content",
-    items: [
-      { label: "Banners", href: "/admin/banners", icon: ImageIcon },
-      { label: "Messages", href: "/admin/messages", icon: MailIcon },
+      { label: "Site Photos", href: "/admin/site-images", icon: ImageIcon },
     ],
   },
   {
@@ -67,17 +53,17 @@ export const ADMIN_NAV = [
   },
 ] as const;
 
-const SEARCH_SCOPES = [
-  { value: "orders", label: "Orders" },
-  { value: "products", label: "Products" },
-  { value: "customers", label: "Customers" },
-];
-
 function Brand() {
   return (
-    <Link href="/admin/dashboard" className={cx("block rounded px-1 py-1", focusRing)}>
-      <span className="block font-display text-2xl leading-none font-semibold tracking-[0.18em] text-ivory">APSÁRE</span>
-      <span className="mt-1 block text-[10px] tracking-[0.32em] text-gold-400 uppercase">Atelier admin</span>
+    <Link href="/admin/dashboard" className={cx("flex items-center gap-2.5 rounded px-1 py-1", focusRing)}>
+      <div className="relative h-9 w-9 shrink-0 rounded-lg overflow-hidden border border-amber-400/40 bg-[#0b1528]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/emblem.png" alt="Gurudev InfoTech Logo" className="h-full w-full object-contain p-0.5" />
+      </div>
+      <div>
+        <span className="block font-display text-lg leading-none font-bold tracking-[0.08em] text-white">GURUDEV</span>
+        <span className="mt-0.5 block text-[9px] tracking-[0.2em] text-[#f9b233] uppercase font-bold">Admin Portal</span>
+      </div>
     </Link>
   );
 }
@@ -124,61 +110,29 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 function SidebarFooter() {
   return (
     <div className="border-t border-white/10 px-6 py-4 text-[11px] leading-relaxed text-ivory/40">
-      Label Apsáre · crafted for her modern aesthetic
+      GURUDEV INFOTECH · Total IT Solutions Since 1998
     </div>
   );
 }
 
-function TopSearch() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const id = useId();
-  const current = SEARCH_SCOPES.find((s) => pathname.startsWith(`/admin/${s.value}`))?.value ?? "orders";
-  const [scope, setScope] = useState<string | null>(null);
-  const [term, setTerm] = useState("");
-  const activeScope = scope ?? current;
-
+function TopHeaderBar() {
   return (
-    <form
-      role="search"
-      className="flex min-w-0 flex-1 items-center rounded-full border border-ink/10 bg-ivory/70 transition-colors focus-within:border-sage-600 focus-within:bg-white md:max-w-lg"
-      onSubmit={(e) => {
-        e.preventDefault();
-        const q = term.trim();
-        router.push(`/admin/${activeScope}${q ? `?q=${encodeURIComponent(q)}` : ""}`);
-      }}
-    >
-      <label htmlFor={`${id}-scope`} className="sr-only">
-        Search in
-      </label>
-      <select
-        id={`${id}-scope`}
-        value={activeScope}
-        onChange={(e) => setScope(e.target.value)}
-        className="hidden min-h-11 cursor-pointer appearance-none rounded-l-full bg-transparent pr-2 pl-4 text-xs font-semibold tracking-wide text-ink/70 focus:outline-none focus-visible:underline sm:block"
+    <div className="flex items-center gap-3">
+      <div className="hidden sm:flex items-center gap-2">
+        <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
+          Gurudev IT Management Console
+        </span>
+      </div>
+      <Link
+        href="/"
+        target="_blank"
+        className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-[#0b1528] hover:text-white transition-colors"
       >
-        {SEARCH_SCOPES.map((s) => (
-          <option key={s.value} value={s.value}>
-            {s.label}
-          </option>
-        ))}
-      </select>
-      <span aria-hidden className="hidden h-5 w-px bg-ink/15 sm:block" />
-      <label htmlFor={`${id}-q`} className="sr-only">
-        Search {activeScope}
-      </label>
-      <input
-        id={`${id}-q`}
-        type="search"
-        value={term}
-        onChange={(e) => setTerm(e.target.value)}
-        placeholder={`Search ${activeScope}…`}
-        className="min-h-11 min-w-0 flex-1 bg-transparent px-3 text-sm placeholder:text-ink/40 focus:outline-none sm:px-3"
-      />
-      <button type="submit" aria-label="Search" className={cx("grid size-11 shrink-0 place-items-center rounded-full text-ink/55 hover:text-ink", focusRing)}>
-        <SearchIcon className="size-[18px]" />
-      </button>
-    </form>
+        <span>View Live Site</span>
+        <span>↗</span>
+      </Link>
+    </div>
   );
 }
 
@@ -222,7 +176,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <IconButton label="Open navigation" className="lg:hidden" onClick={() => setDrawerOpen(true)} aria-expanded={drawerOpen}>
             <MenuIcon />
           </IconButton>
-          <TopSearch />
+          <TopHeaderBar />
           <div className="ml-auto">
             <AdminMenu />
           </div>

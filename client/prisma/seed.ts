@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "../src/server/lib/prisma";
 import { discountPercent } from "../src/server/utils/pricing";
 
-const ADMIN_EMAIL = "admin@labelapsare.com";
+const ADMIN_EMAIL = "admin@gurudevinfotech.com";
 const NODE_ENV = process.env.NODE_ENV ?? "development";
 if (NODE_ENV === "production") throw new Error("Refusing to seed with NODE_ENV=production: the seed creates known demo accounts.");
 if (!process.env.SEED_ADMIN_PASSWORD && NODE_ENV !== "development") {
@@ -18,8 +18,6 @@ if (ADMIN_PASSWORD === DEV_ADMIN_PASSWORD) {
 }
 /** Same cost as client/src/server/modules/auth/auth.service.ts. */
 const BCRYPT_COST = 12;
-const CUSTOMER_EMAIL = "customer@labelapsare.com";
-const CUSTOMER_PASSWORD = "Customer@123";
 
 const img = (file: string) => `/images/products/${file}.jpg`;
 const slugify = (s: string) =>
@@ -286,28 +284,13 @@ const code = (s: string) => s.toUpperCase().replace(/[^A-Z0-9]+/g, "").slice(0, 
 // ─── Seeders ──────────────────────────────────────────────────
 
 async function seedUsers() {
-  const [adminHash, customerHash] = await Promise.all([bcrypt.hash(ADMIN_PASSWORD, BCRYPT_COST), bcrypt.hash(CUSTOMER_PASSWORD, BCRYPT_COST)]);
+  const adminHash = await bcrypt.hash(ADMIN_PASSWORD, BCRYPT_COST);
 
   await prisma.user.upsert({
     where: { email: ADMIN_EMAIL },
-    update: { role: "ADMIN", isActive: true }, // never overwrite an existing password
-    create: { fullName: "Apsáre Admin", email: ADMIN_EMAIL, mobile: "9000000001", passwordHash: adminHash, role: "ADMIN" },
+    update: { role: "ADMIN", isActive: true },
+    create: { fullName: "Gurudev Admin", email: ADMIN_EMAIL, mobile: "9000000000", passwordHash: adminHash, role: "ADMIN" },
   });
-
-  const customer = await prisma.user.upsert({
-    where: { email: CUSTOMER_EMAIL },
-    update: { isActive: true },
-    create: { fullName: "Ananya Rao", email: CUSTOMER_EMAIL, mobile: "9876543210", passwordHash: customerHash },
-  });
-
-  if (!(await prisma.address.count({ where: { userId: customer.id } }))) {
-    await prisma.address.create({
-      data: {
-        userId: customer.id, fullName: "Ananya Rao", mobile: "9876543210", line1: "12, 4th Cross, Indiranagar",
-        landmark: "Near CMH Road Metro", city: "Bengaluru", state: "Karnataka", pincode: "560038", isDefault: true,
-      },
-    });
-  }
 }
 
 async function seedCategories() {
@@ -419,7 +402,7 @@ async function main() {
     prisma.productVariant.count({ where: { stock: 0 } }),
   ]);
   console.log(`Seeded ${CATEGORIES.length} categories, ${products} products, ${variants} variants (${outOfStock} out of stock).`);
-  console.log(`Admin: ${ADMIN_EMAIL} (password from SEED_ADMIN_PASSWORD on first seed) · Customer: ${CUSTOMER_EMAIL} / ${CUSTOMER_PASSWORD}`);
+  console.log(`Admin: ${ADMIN_EMAIL} (password from SEED_ADMIN_PASSWORD on first seed)`);
 }
 
 main()

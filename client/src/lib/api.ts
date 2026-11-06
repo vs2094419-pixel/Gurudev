@@ -26,6 +26,7 @@ export class ApiError extends Error {
 /** Thin fetch wrapper for the /api Route Handlers. Sends the httpOnly auth cookie. */
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
+    cache: "no-store",
     ...init,
     credentials: "include",
     headers: { "Content-Type": "application/json", ...init.headers },

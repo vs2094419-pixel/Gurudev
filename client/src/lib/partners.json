@@ -1,0 +1,176 @@
+{
+  "hardware": [
+    {
+      "id": "hp",
+      "name": "HP",
+      "svgKey": "hp",
+      "isActive": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "lenovo",
+      "name": "Lenovo",
+      "svgKey": "lenovo",
+      "isActive": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "dell",
+      "name": "Dell",
+      "svgKey": "dell",
+      "isActive": true,
+      "sortOrder": 3
+    },
+    {
+      "id": "apc",
+      "name": "APC",
+      "svgKey": "apc",
+      "isActive": true,
+      "sortOrder": 4
+    },
+    {
+      "id": "toshiba",
+      "name": "Toshiba",
+      "svgKey": "toshiba",
+      "isActive": true,
+      "sortOrder": 5
+    },
+    {
+      "id": "apple",
+      "name": "Apple",
+      "svgKey": "apple",
+      "isActive": true,
+      "sortOrder": 6
+    },
+    {
+      "id": "cisco-hw",
+      "name": "Cisco",
+      "svgKey": "cisco",
+      "isActive": true,
+      "sortOrder": 7
+    },
+    {
+      "id": "logitech",
+      "name": "Logitech",
+      "svgKey": "logitech",
+      "isActive": true,
+      "sortOrder": 8
+    },
+    {
+      "id": "netapp",
+      "name": "NetApp",
+      "svgKey": "netapp",
+      "isActive": true,
+      "sortOrder": 9
+    },
+    {
+      "id": "acer",
+      "name": "Acer",
+      "svgKey": "acer",
+      "isActive": true,
+      "sortOrder": 10
+    },
+    {
+      "id": "samsung",
+      "name": "Samsung",
+      "svgKey": "samsung",
+      "isActive": true,
+      "sortOrder": 11
+    },
+    {
+      "id": "maxhub",
+      "name": "Maxhub",
+      "svgKey": "maxhub",
+      "isActive": true,
+      "sortOrder": 12
+    }
+  ],
+  "networking": [
+    {
+      "id": "molex",
+      "name": "Molex",
+      "svgKey": "molex",
+      "isActive": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "schneider",
+      "name": "Schneider Electric",
+      "svgKey": "schneider",
+      "isActive": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "dlink",
+      "name": "D-Link",
+      "svgKey": "dlink",
+      "isActive": true,
+      "sortOrder": 3
+    },
+    {
+      "id": "cisco-net",
+      "name": "Cisco",
+      "svgKey": "cisco",
+      "isActive": true,
+      "sortOrder": 4
+    },
+    {
+      "id": "netgear",
+      "name": "Netgear",
+      "svgKey": "netgear",
+      "isActive": true,
+      "sortOrder": 5
+    },
+    {
+      "id": "racks",
+      "name": "Racks & Accessories",
+      "svgKey": "racks",
+      "isActive": true,
+      "sortOrder": 6
+    }
+  ],
+  "software": [
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "svgKey": "microsoft",
+      "isActive": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "adobe",
+      "name": "Adobe",
+      "svgKey": "adobe",
+      "isActive": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "symantec",
+      "name": "Symantec",
+      "svgKey": "symantec",
+      "isActive": true,
+      "sortOrder": 3
+    },
+    {
+      "id": "tally",
+      "name": "Tally",
+      "svgKey": "tally",
+      "isActive": true,
+      "sortOrder": 4
+    },
+    {
+      "id": "linux",
+      "name": "Linux",
+      "svgKey": "linux",
+      "isActive": true,
+      "sortOrder": 5
+    },
+    {
+      "id": "other-softwares",
+      "name": "Other Customized Softwares",
+      "svgKey": "other-softwares",
+      "isActive": true,
+      "sortOrder": 6
+    }
+  ]
+}

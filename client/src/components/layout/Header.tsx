@@ -5,29 +5,24 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 import { NAV_LINKS, BRAND } from "@/lib/constants";
 import { BrandLogo } from "@/components/brand/BrandLogo";
-import { CartDrawer } from "@/components/store/CartDrawer";
 import { luxuryEase } from "@/lib/motion";
 import {
-  Search,
-  ShoppingBag,
-  Heart,
   User,
   Menu,
   X,
   LogOut,
   ChevronDown,
+  PhoneCall,
+  Mail,
+  ArrowRight,
 } from "lucide-react";
 
 export function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const { itemCount, openCartDrawer } = useCart();
-  const { total: wishlistTotal } = useWishlist();
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -38,15 +33,6 @@ export function Header() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-    router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-    setIsMobileSearchOpen(false);
-  };
 
   const handleLogout = async () => {
     await logout();
@@ -59,265 +45,180 @@ export function Header() {
       {/* Luxury gold scroll progress indicator */}
       <motion.div
         style={{ scaleX }}
-        className="fixed top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300 origin-left z-50 pointer-events-none"
+        className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#f9b233] via-[#d92525] to-[#f9b233] origin-left z-50 pointer-events-none"
       />
 
-      <header className="sticky top-0 z-40 border-b border-sage-200/80 bg-ivory/95 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xs">
         {/* Top Announcement Bar */}
-        <div className="bg-sage-400 py-1.5 px-4 text-center text-[11px] uppercase tracking-[0.25em] text-ink font-medium">
-          Free shipping on orders above ₹1,999 • Handcrafted with love
+        <div className="bg-[#0b1528] py-2 px-4 text-center text-xs text-slate-200 font-medium border-b border-slate-800">
+          <div className="mx-auto flex max-w-7xl items-center justify-between text-[11px] sm:text-xs">
+            <div className="hidden sm:flex items-center gap-2 text-slate-300">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#f9b233] animate-pulse" />
+              <span>GURUDEV INFOTECH • Total IT Solutions Since 1998</span>
+            </div>
+
+            <div className="flex w-full sm:w-auto items-center justify-center sm:justify-end gap-3 sm:gap-6 text-slate-300">
+              <div className="inline-flex items-center gap-1.5 text-slate-300">
+                <PhoneCall className="h-3.5 w-3.5 text-[#f9b233]" />
+                <a
+                  href={`tel:${BRAND.phone.replace(/\s+/g, "")}`}
+                  className="hover:text-[#f9b233] transition-colors"
+                >
+                  {BRAND.phone}
+                </a>
+                <span className="text-slate-600 hidden sm:inline">,</span>
+                <a
+                  href={`tel:${BRAND.phoneSecondary.replace(/\s+/g, "")}`}
+                  className="hidden sm:inline hover:text-[#f9b233] transition-colors"
+                >
+                  {BRAND.phoneSecondary}
+                </a>
+              </div>
+              <a
+                href={`mailto:${BRAND.email}`}
+                className="hidden md:inline-flex items-center gap-1.5 hover:text-[#f9b233] transition-colors"
+              >
+                <Mail className="h-3.5 w-3.5 text-[#f9b233]" />
+                <span>{BRAND.email}</span>
+              </a>
+              <a
+                href={BRAND.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden xl:inline-flex items-center gap-1 text-slate-400 hover:text-[#f9b233] transition-colors"
+                title="View location on Google Maps"
+              >
+                <span>Bengaluru 560050</span>
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* Main Navbar */}
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:py-2.5 sm:px-6 min-h-[72px] sm:min-h-[82px]">
           {/* Mobile hamburger */}
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center lg:hidden">
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open menu"
-              className="p-1.5 text-ink hover:text-gold-600 cursor-pointer"
+              className="p-1.5 text-slate-700 hover:text-[#0b1528] cursor-pointer"
             >
-              <Menu className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
-              aria-label="Toggle search"
-              className="p-1.5 text-ink hover:text-gold-600 cursor-pointer"
-            >
-              <Search className="h-5 w-5" />
+              <Menu className="h-6 w-6" />
             </button>
           </div>
 
-          {/* Brand Logo */}
+          {/* Brand Logo - Bold, prominent size matching design */}
           <Link
             href="/"
-            className="flex items-center justify-center py-1 transition-transform duration-300 hover:scale-[1.02]"
+            className="flex items-center justify-start py-1 transition-transform duration-300 hover:scale-[1.02] shrink-0"
             aria-label={`${BRAND.name} — Home`}
           >
-            <BrandLogo variant="dark" size="md" priority />
+            <BrandLogo variant="dark" size="lg" priority />
             <span className="sr-only">{BRAND.name}</span>
           </Link>
 
-          {/* Desktop Search Bar */}
-          <div className="hidden flex-1 max-w-md mx-8 md:block">
-            <form onSubmit={handleSearchSubmit} className="relative">
-              <input
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search sarees, silks, motifs, colors…"
-                className="w-full rounded-full border border-sage-300 bg-white/80 py-2 pl-4 pr-10 text-xs text-ink placeholder:text-ink/40 outline-none transition focus:border-gold-500 focus:bg-white focus:ring-1 focus:ring-gold-500/20"
-              />
-              <button
-                type="submit"
-                aria-label="Search"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink/40 hover:text-ink cursor-pointer"
-              >
-                <Search className="h-3.5 w-3.5" />
-              </button>
-            </form>
-          </div>
-
-          {/* Actions: Account, Wishlist, Bag */}
-          <div className="flex items-center gap-3 sm:gap-4 text-ink">
-            {/* Account / Login dropdown */}
-            <div className="relative">
-              {user ? (
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-1.5 p-1.5 text-xs hover:text-gold-600 cursor-pointer"
-                  >
-                    <User className="h-4 w-4" />
-                    <span className="hidden sm:inline font-medium max-w-[100px] truncate">
-                      {user.fullName.split(" ")[0]}
-                    </span>
-                    <ChevronDown className="h-3 w-3 opacity-60" />
-                  </button>
-
-                  <AnimatePresence>
-                    {isUserMenuOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 6, scale: 0.96 }}
-                        transition={{ duration: 0.18, ease: luxuryEase }}
-                        className="absolute right-0 mt-2 w-48 rounded-lg border border-sage-200 bg-ivory p-1.5 shadow-xl z-50 text-xs"
-                        onMouseLeave={() => setIsUserMenuOpen(false)}
-                      >
-                        <div className="px-3 py-2 border-b border-sage-200">
-                          <p className="font-semibold text-ink truncate">{user.fullName}</p>
-                          <p className="text-[11px] text-ink/60 truncate">{user.email}</p>
-                        </div>
-                        <Link
-                          href="/account"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="block rounded px-3 py-2 text-ink hover:bg-sage-100"
-                        >
-                          My Account
-                        </Link>
-                        <Link
-                          href="/account/orders"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="block rounded px-3 py-2 text-ink hover:bg-sage-100"
-                        >
-                          Orders & History
-                        </Link>
-                        <Link
-                          href="/account/addresses"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="block rounded px-3 py-2 text-ink hover:bg-sage-100"
-                        >
-                          Saved Addresses
-                        </Link>
-                        {user.role === "ADMIN" && (
-                          <Link
-                            href="/admin/dashboard"
-                            onClick={() => setIsUserMenuOpen(false)}
-                            className="block rounded px-3 py-2 font-medium text-gold-600 hover:bg-sage-100"
-                          >
-                            Admin Panel
-                          </Link>
-                        )}
-                        <button
-                          type="button"
-                          onClick={handleLogout}
-                          className="flex w-full items-center gap-2 rounded px-3 py-2 text-sale hover:bg-sage-100 text-left cursor-pointer border-t border-sage-200 mt-1"
-                        >
-                          <LogOut className="h-3.5 w-3.5" />
-                          <span>Sign Out</span>
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-xs font-bold uppercase tracking-wider text-slate-700 whitespace-nowrap">
+            {NAV_LINKS.map((link) => {
+              const isActive =
+                pathname === link.href ||
+                (link.href !== "/" && pathname.startsWith(link.href));
+              return (
                 <Link
-                  href="/login"
-                  className="flex items-center gap-1.5 p-1.5 text-xs font-medium uppercase tracking-wider hover:text-gold-600"
+                  key={link.label}
+                  href={link.href}
+                  className={`relative py-1 transition-colors hover:text-[#d92525] ${
+                    isActive
+                      ? "text-[#d92525] font-extrabold"
+                      : "text-slate-700"
+                  }`}
                 >
-                  <User className="h-4 w-4" />
-                  <span className="hidden sm:inline">Sign In</span>
+                  {link.label}
                 </Link>
-              )}
-            </div>
+              );
+            })}
+          </nav>
 
-            {/* Wishlist */}
+          {/* Right Action Buttons */}
+          <div className="flex items-center gap-3 text-slate-700">
+            {/* Direct Get Quote CTA Button */}
             <Link
-              href="/wishlist"
-              className="relative p-1.5 hover:text-gold-600 transition"
-              aria-label="Wishlist"
+              href="/contact"
+              className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-[#0b1528] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#d92525] hover:shadow-md"
             >
-              <Heart className="h-5 w-5" />
-              <AnimatePresence>
-                {wishlistTotal > 0 && (
-                  <motion.span
-                    key={`w-${wishlistTotal}`}
-                    initial={{ scale: 0.6 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                    className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-[9px] font-bold text-ink shadow-xs"
-                  >
-                    {wishlistTotal > 9 ? "9+" : wishlistTotal}
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              <span>Get Quote</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
 
-            {/* Cart / Bag Button */}
-            <button
-              type="button"
-              onClick={openCartDrawer}
-              className="relative p-1.5 hover:text-gold-600 transition cursor-pointer"
-              aria-label="Shopping Bag"
-            >
-              <ShoppingBag className="h-5 w-5" />
-              <AnimatePresence>
-                {itemCount > 0 && (
-                  <motion.span
-                    key={`c-${itemCount}`}
-                    initial={{ scale: 0.6 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                    className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-ink text-[9px] font-bold text-gold-300 shadow-xs"
-                  >
-                    {itemCount > 9 ? "9+" : itemCount}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </button>
+            {/* Hidden Admin Profile menu - only rendered when an Admin is logged in */}
+            {user && user.role === "ADMIN" && (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-800 hover:border-[#f9b233] hover:text-[#0b1528] cursor-pointer transition-colors shadow-2xs"
+                >
+                  <User className="h-4 w-4 text-[#d92525]" />
+                  <span className="hidden sm:inline font-bold">Admin</span>
+                  <ChevronDown className="h-3 w-3 opacity-60" />
+                </button>
+
+                <AnimatePresence>
+                  {isUserMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                      transition={{ duration: 0.18, ease: luxuryEase }}
+                      className="absolute right-0 mt-2 w-52 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 text-xs"
+                      onMouseLeave={() => setIsUserMenuOpen(false)}
+                    >
+                      <div className="px-3 py-2 border-b border-slate-100 bg-slate-50/70 rounded-t-lg">
+                        <p className="font-bold text-slate-900 truncate">{user.fullName || "Admin"}</p>
+                        <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
+                      </div>
+                      <Link
+                        href="/admin/dashboard"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="block rounded-lg px-3 py-2 font-medium text-[#0b1528] hover:bg-slate-100 transition-colors"
+                      >
+                        Admin Dashboard
+                      </Link>
+                      <Link
+                        href="/admin/site-images"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="block rounded-lg px-3 py-2 font-medium text-[#d92525] hover:bg-rose-50 transition-colors"
+                      >
+                        Site Photos Manager
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-rose-600 hover:bg-rose-50 text-left cursor-pointer border-t border-slate-100 mt-1 transition-colors"
+                      >
+                        <LogOut className="h-3.5 w-3.5" />
+                        <span>Sign Out</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Mobile Search Dropdown */}
-        <AnimatePresence>
-          {isMobileSearchOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: luxuryEase }}
-              className="overflow-hidden border-t border-sage-200 bg-ivory px-4 py-3 md:hidden"
-            >
-              <form onSubmit={handleSearchSubmit} className="relative">
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search sarees, silks, motifs…"
-                  autoFocus
-                  className="w-full rounded-full border border-sage-300 bg-white py-2 pl-4 pr-10 text-xs text-ink placeholder:text-ink/40 outline-none"
-                />
-                <button
-                  type="submit"
-                  aria-label="Search"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-ink/40"
-                >
-                  <Search className="h-4 w-4" />
-                </button>
-              </form>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Desktop Category Navigation */}
-        <nav className="mx-auto hidden md:flex max-w-7xl justify-center gap-8 px-4 pb-3 pt-1 text-xs uppercase tracking-[0.18em] font-medium whitespace-nowrap">
-          {NAV_LINKS.map((link) => {
-            const isActive =
-              pathname === link.href ||
-              (link.href !== "/" && pathname.startsWith(link.href));
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative py-1 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:transition-all ${
-                  isActive
-                    ? "text-gold-600 font-semibold after:w-full after:bg-gold-500"
-                    : "text-ink/80 hover:text-gold-600 after:w-0 after:bg-gold-500 hover:after:w-full"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
       </header>
 
       {/* Mobile Drawer Navigation */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-50 flex md:hidden">
+          <div className="fixed inset-0 z-50 flex lg:hidden">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 bg-ink/60 backdrop-blur-xs"
+              className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
@@ -325,92 +226,82 @@ export function Header() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ duration: 0.35, ease: luxuryEase }}
-              className="relative flex w-4/5 max-w-xs flex-col bg-ivory p-6 shadow-2xl z-10"
+              className="relative flex w-4/5 max-w-xs flex-col bg-white p-6 shadow-2xl z-10"
             >
-              <div className="flex items-center justify-between border-b border-sage-200 pb-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <Link
                   href="/"
                   onClick={() => setIsMobileMenuOpen(false)}
                   aria-label={`${BRAND.name} — Home`}
                 >
-                  <BrandLogo variant="dark" size="sm" />
+                  <BrandLogo variant="dark" size="md" />
                 </Link>
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-1 text-ink/60 hover:text-ink cursor-pointer"
+                  className="p-1.5 text-slate-400 hover:text-slate-700 cursor-pointer"
+                  aria-label="Close menu"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
-              <nav className="mt-6 flex flex-col gap-4 text-xs uppercase tracking-[0.2em] font-medium">
-                {NAV_LINKS.map((link) => {
-                  const isActive =
-                    pathname === link.href ||
-                    (link.href !== "/" && pathname.startsWith(link.href));
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`py-1.5 transition-colors ${
-                        isActive
-                          ? "text-gold-600 font-semibold"
-                          : "text-ink/80 hover:text-gold-600"
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  );
-                })}
-              </nav>
+              {/* Mobile Drawer Links */}
+              <div className="mt-6 flex flex-col gap-4 text-sm font-bold uppercase tracking-wider">
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="py-1 text-slate-800 hover:text-[#d92525]"
+                >
+                  Home
+                </Link>
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="py-1 text-slate-800 hover:text-[#d92525]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
 
-              <div className="mt-auto border-t border-sage-200 pt-6 text-xs text-ink/80">
-                {user ? (
-                  <div className="space-y-3">
-                    <p className="font-medium text-ink">{user.fullName}</p>
-                    <Link
-                      href="/account"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block text-ink/70 hover:text-gold-600"
-                    >
-                      My Profile & Orders
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="text-sale font-medium"
-                    >
-                      Sign Out
-                    </button>
+              {/* Drawer Bottom Contact Info */}
+              <div className="mt-auto border-t border-slate-100 pt-6 space-y-3 text-xs text-slate-600">
+                <div className="flex items-start gap-2">
+                  <PhoneCall className="h-4 w-4 text-[#f9b233] shrink-0 mt-0.5" />
+                  <div className="flex flex-col font-semibold text-slate-800">
+                    <a href={`tel:${BRAND.phone.replace(/\s+/g, "")}`}>{BRAND.phone}</a>
+                    <a href={`tel:${BRAND.phoneSecondary.replace(/\s+/g, "")}`}>{BRAND.phoneSecondary}</a>
                   </div>
-                ) : (
-                  <div className="flex flex-col gap-2">
-                    <Link
-                      href="/login"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-center rounded-full bg-ink py-2 text-xs uppercase tracking-widest text-gold-300"
-                    >
-                      Sign In
-                    </Link>
-                    <Link
-                      href="/signup"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-center rounded-full border border-sage-300 py-2 text-xs uppercase tracking-widest text-ink"
-                    >
-                      Register
-                    </Link>
-                  </div>
-                )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-[#f9b233]" />
+                  <a href={`mailto:${BRAND.email}`} className="text-slate-700">
+                    {BRAND.email}
+                  </a>
+                </div>
+                <a
+                  href={BRAND.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-[11px] text-slate-500 hover:text-[#d92525]"
+                >
+                  {BRAND.address}
+                </a>
+                <Link
+                  href="/contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="mt-2 block w-full rounded-xl bg-[#0b1528] py-3 text-center text-xs font-bold uppercase tracking-wider text-white shadow-sm"
+                >
+                  Request Consultation
+                </Link>
               </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-
-      {/* Cart Drawer instance */}
-      <CartDrawer />
     </>
   );
 }

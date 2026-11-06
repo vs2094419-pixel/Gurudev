@@ -1,7 +1,15 @@
 @import "tailwindcss";
 
-/* Label Apsáre palette — harmonious with the royal gold & midnight monogram logo. */
+/* Corporate IT & Brand Palette for Gurudev InfoTech */
 @theme {
+  --color-navy: #0b1528;
+  --color-navy-dark: #070d1a;
+  --color-navy-card: #0f1d38;
+  --color-gold: #f9b233;
+  --color-gold-hover: #e89e1c;
+  --color-accent-red: #d92525;
+  --color-light-grey: #eef4f8;
+
   --color-sage-50: #f5f7ef;
   --color-sage-100: #e8ecdb;
   --color-sage-200: #d2dabb;
@@ -17,23 +25,26 @@
   --color-gold-600: #aa7a24;
   --color-gold-700: #7d5714;
 
-  --color-ink: #121019;
-  --color-ivory: #fbf9f3;
-  --color-sale: #b4432f;
+  --color-ink: #0f172a;
+  --color-ivory: #ffffff;
+  --color-sale: #d92525;
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-sans: var(--font-josefin), "Josefin Sans", system-ui, sans-serif;
 }
 
 body {
-  background: var(--color-ivory);
-  color: var(--color-ink);
+  background: #f8fafc;
+  color: #0f172a;
   font-family: var(--font-sans);
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
 }
 

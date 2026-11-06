@@ -3,8 +3,9 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import { ToastProvider } from "@/components/admin/Toast";
 
 export const metadata = {
-  title: { default: "Admin", template: "%s · Admin | Label Apsáre" },
+  title: { default: "Admin", template: "%s · Admin | Gurudev InfoTech" },
   robots: { index: false, follow: false },
+  icons: { icon: "/favicon.ico", apple: "/icon.png" },
 };
 
 /**

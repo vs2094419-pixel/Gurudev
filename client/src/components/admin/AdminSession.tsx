@@ -48,32 +48,52 @@ export function AdminSessionProvider({ children }: { children: React.ReactNode }
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
+    let active = true;
     const controller = new AbortController();
-    authApi.me({ signal: controller.signal }).then(
-      ({ user }) => {
-        if (user.role === "ADMIN") return setState({ status: "ready", user });
-        setState({ status: "redirecting" });
-        router.replace(loginUrl("forbidden"));
-      },
-      (e: unknown) => {
-        if (controller.signal.aborted || isAbortError(e)) return;
-        const err = toApiError(e);
-        if (err.status === 401) {
+
+    // Safety timeout: if session verification hangs, redirect to login
+    const timeoutId = setTimeout(() => {
+      if (active && state.status === "loading") {
+        window.location.replace(loginUrl("expired"));
+      }
+    }, 4500);
+
+    authApi
+      .me({ signal: controller.signal })
+      .then((data) => {
+        if (!active) return;
+        clearTimeout(timeoutId);
+        const user = data?.user;
+        if (user && user.role === "ADMIN") {
+          setState({ status: "ready", user });
+        } else {
           setState({ status: "redirecting" });
-          router.replace(loginUrl());
+          window.location.replace(loginUrl("forbidden"));
+        }
+      })
+      .catch((e: unknown) => {
+        if (!active || controller.signal.aborted || isAbortError(e)) return;
+        clearTimeout(timeoutId);
+        const err = toApiError(e);
+        if (err.status === 401 || err.status === 403) {
+          setState({ status: "redirecting" });
+          window.location.replace(loginUrl());
         } else {
           setState({ status: "error", message: errorMessage(err) });
         }
-      },
-    );
-    return () => controller.abort();
-  }, [attempt, router]);
+      });
+
+    return () => {
+      active = false;
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [attempt]);
 
   const logout = useCallback(async () => {
     await authApi.logout().catch(() => {});
-    router.replace("/admin/login");
-    router.refresh();
-  }, [router]);
+    window.location.href = "/admin/login";
+  }, []);
 
   if (state.status === "ready") {
     return <SessionContext.Provider value={{ user: state.user, logout }}>{children}</SessionContext.Provider>;
@@ -81,20 +101,30 @@ export function AdminSessionProvider({ children }: { children: React.ReactNode }
 
   if (state.status === "error") {
     return (
-      <div className="grid min-h-dvh place-items-center bg-ivory p-6">
+      <div className="grid min-h-dvh place-items-center bg-[#070d1e] p-6 text-white">
         <EmptyState
           tone="error"
           title="Couldn't check your session"
           description={state.message}
           action={
-            <Button
-              onClick={() => {
-                setState({ status: "loading" });
-                setAttempt((a) => a + 1);
-              }}
-            >
-              Try again
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                onClick={() => {
+                  setState({ status: "loading" });
+                  setAttempt((a) => a + 1);
+                }}
+              >
+                Try again
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  window.location.href = loginUrl();
+                }}
+              >
+                Sign In
+              </Button>
+            </div>
           }
         />
       </div>
@@ -102,10 +132,10 @@ export function AdminSessionProvider({ children }: { children: React.ReactNode }
   }
 
   return (
-    <div role="status" className="grid min-h-dvh place-items-center bg-ivory text-ink/60">
+    <div role="status" className="grid min-h-dvh place-items-center bg-[#0b1528] text-slate-300">
       <div className="flex flex-col items-center gap-3">
-        <p className="font-display text-2xl tracking-[0.2em] text-ink">APSÁRE</p>
-        <p className="flex items-center gap-2 text-sm">
+        <p className="font-display text-2xl font-bold tracking-[0.15em] text-[#f9b233]">GURUDEV INFOTECH</p>
+        <p className="flex items-center gap-2 text-sm text-slate-300">
           <Spinner /> {state.status === "redirecting" ? "Redirecting to sign in…" : "Checking your session…"}
         </p>
       </div>

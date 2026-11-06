@@ -1,11 +1,12 @@
 import { randomUUID } from "node:crypto";
+import { existsSync } from "node:fs";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { v2 as cloudinary, type UploadApiResponse } from "cloudinary";
 import { env } from "../../config/env";
 import { HttpError } from "../../utils/http-error";
 
-export const CLOUDINARY_FOLDER = "apsare/products";
+export const CLOUDINARY_FOLDER = "gurudev/site";
 
 export type ImageType = "jpeg" | "png" | "webp" | "avif";
 export const MIME_TYPES: Record<string, ImageType> = {
@@ -56,7 +57,9 @@ if (cloudinaryEnabled) {
  * Resolved from the cwd (the client/ workspace for `next dev|start` and `npm test -w client`):
  * in a Next bundle `import.meta.url` points into .next/, so the Express file-relative path can't be used.
  */
-export const LOCAL_DIR = path.resolve(process.cwd(), "public/uploads");
+export const LOCAL_DIR = existsSync(path.resolve(process.cwd(), "public"))
+  ? path.resolve(process.cwd(), "public/uploads")
+  : path.resolve(process.cwd(), "client/public/uploads");
 /** Names we generate: <uuid>.<ext>. Anything else is refused on delete. */
 const LOCAL_NAME = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(jpg|png|webp|avif)$/;
 const PUBLIC_ID = new RegExp(`^${CLOUDINARY_FOLDER}/[A-Za-z0-9_-]{1,100}$`);
@@ -78,7 +81,7 @@ export async function storeImage(buf: Buffer, type: ImageType): Promise<StoredIm
   }
   await mkdir(LOCAL_DIR, { recursive: true });
   const name = `${randomUUID()}.${EXT[type]}`; // never the client's filename
-  await writeFile(path.join(LOCAL_DIR, name), buf, { flag: "wx" });
+  await writeFile(path.join(/*turbopackIgnore: true*/ LOCAL_DIR, name), buf, { flag: "wx" });
   return { url: `/uploads/${name}`, publicId: null, format: type, bytes: buf.length };
 }
 
@@ -96,7 +99,7 @@ export async function deleteImage(ref: { publicId?: string; url?: string }): Pro
   const local = ref.url?.startsWith("/uploads/") ? ref.url.slice("/uploads/".length) : null;
   if (local !== null) {
     if (!LOCAL_NAME.test(local)) throw new HttpError(400, "Not a deletable upload", "BAD_REQUEST");
-    const file = path.resolve(LOCAL_DIR, local);
+    const file = path.resolve(/*turbopackIgnore: true*/ LOCAL_DIR, local);
     if (path.dirname(file) !== LOCAL_DIR) throw new HttpError(400, "Not a deletable upload", "BAD_REQUEST");
     try {
       await unlink(file);

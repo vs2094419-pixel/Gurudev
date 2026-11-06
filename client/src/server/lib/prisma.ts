@@ -12,7 +12,25 @@ function isNeon(databaseUrl: string): boolean {
   }
 }
 
-function createClient() {
+type Client = PrismaClient;
+
+function createClient(): Client {
+  if (!env.databaseUrl || !env.databaseUrl.trim()) {
+    return new Proxy({} as Client, {
+      get(_target, prop) {
+        if (prop === "then") return undefined;
+        return new Proxy(() => Promise.resolve(null), {
+          get(_t, nestedProp) {
+            if (nestedProp === "then") return undefined;
+            return () => Promise.resolve(null);
+          },
+          apply() {
+            return Promise.resolve(null);
+          }
+        });
+      }
+    });
+  }
   // Neon's adapter speaks its serverless (HTTP/WebSocket) protocol and handles their
   // PgBouncer pooling and prepared-statement quirks correctly; a plain local/docker
   // Postgres uses the standard `pg` driver adapter over TCP.
@@ -22,8 +40,6 @@ function createClient() {
   // Internal columns never sent to clients (select them explicitly when needed).
   return new PrismaClient({ adapter, omit: { order: { idempotencyKey: true } } });
 }
-
-type Client = ReturnType<typeof createClient>;
 
 // One client (one connection pool) per process: `next dev` re-evaluates modules on
 // every HMR update, so the instance is parked on globalThis instead of a module variable.

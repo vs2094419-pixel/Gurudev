@@ -52,11 +52,11 @@ export function LoginForm() {
     authApi
       .me({ signal: controller.signal })
       .then(({ user }) => {
-        if (user.role === "ADMIN") router.replace(next);
+        if (user.role === "ADMIN") window.location.href = next;
       })
       .catch(() => {});
     return () => controller.abort();
-  }, [next, router]);
+  }, [next]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -73,8 +73,7 @@ export function LoginForm() {
     setPending(true);
     try {
       await authApi.adminLogin({ identifier: identifier.trim(), password, remember });
-      router.replace(next);
-      router.refresh();
+      window.location.href = next;
     } catch (e) {
       const err = toApiError(e);
       if (err.code === "VALIDATION_ERROR" && err.details.length) {

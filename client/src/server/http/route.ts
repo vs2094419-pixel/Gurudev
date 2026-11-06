@@ -333,11 +333,12 @@ export function route<
       const apiHit = apiLimiter.hit(limitReq, headers);
       if (apiHit) hits.push(apiHit);
 
+      const noStore = () => headers.set("Cache-Control", "private, no-store");
+      if (options.cache === "no-store" && !options.cacheAfterLimiters) noStore();
+
       if (options.auth) {
         user = await authenticate(options.auth, parseCookies(req.headers.get("cookie")), req.headers.get("authorization"));
       }
-      const noStore = () => headers.set("Cache-Control", "private, no-store");
-      if (options.cache === "no-store" && !options.cacheAfterLimiters) noStore();
 
       limitReq.user = user;
       for (const limiter of limiters) {

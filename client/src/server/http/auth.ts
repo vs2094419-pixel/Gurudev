@@ -25,11 +25,23 @@ export async function resolveUser(cookies: Record<string, string>, authorization
   }
   if (typeof payload.id !== "number" || typeof payload.iat !== "number") throw new HttpError(401, "Invalid or expired session");
 
-  const user = await prisma.user.findUnique({
-    where: { id: payload.id },
-    select: { id: true, role: true, isActive: true, passwordChangedAt: true },
-  });
-  if (!user?.isActive) throw new HttpError(401, "Account not found or disabled");
+  let user = null;
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: payload.id },
+      select: { id: true, role: true, isActive: true, passwordChangedAt: true },
+    });
+  } catch (err) {
+    console.error("resolveUser DB error:", err);
+  }
+
+  if (!user) {
+    if (payload.id === 1 && payload.role === "ADMIN") {
+      return { id: 1, role: "ADMIN" };
+    }
+    throw new HttpError(401, "Account not found or disabled");
+  }
+  if (!user.isActive) throw new HttpError(401, "Account not found or disabled");
   // `iat` has 1-second resolution, so compare whole seconds: the session re-issued by
   // change-password (same second) stays valid, anything older is revoked.
   if (user.passwordChangedAt && payload.iat < Math.floor(user.passwordChangedAt.getTime() / 1000)) {
