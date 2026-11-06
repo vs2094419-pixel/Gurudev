@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { BRAND } from "@/lib/constants";
 import { luxuryEase } from "@/lib/motion";
 
-const SESSION_KEY = "apsare_preloader_seen";
+const SESSION_KEY = "gi_preloader_seen";
 
 export function Preloader() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,16 +49,16 @@ export function Preloader() {
             filter: "blur(4px)",
             transition: { duration: 0.55, ease: luxuryEase },
           }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-ivory/98 backdrop-blur-md select-none overflow-hidden"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/98 backdrop-blur-md select-none overflow-hidden"
           aria-live="polite"
           aria-busy="true"
         >
-          {/* Subtle ambient golden background glow */}
+          {/* Subtle ambient brand background glow */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.5, scale: 1.15 }}
+            animate={{ opacity: 0.35, scale: 1.15 }}
             transition={{ duration: 1.2, ease: luxuryEase }}
-            className="pointer-events-none absolute h-[320px] w-[320px] rounded-full bg-gradient-to-tr from-gold-400/20 via-gold-300/10 to-transparent blur-3xl"
+            className="pointer-events-none absolute h-[320px] w-[320px] rounded-full bg-gradient-to-tr from-[#0b1528]/10 via-[#d92525]/10 to-[#f9b233]/15 blur-3xl"
           />
 
           <motion.div
@@ -67,20 +67,19 @@ export function Preloader() {
             transition={{ duration: 0.7, ease: luxuryEase }}
             className="relative z-10 flex flex-col items-center text-center px-6"
           >
-            {/* High-Resolution Brand Logo */}
+            {/* Same High-Resolution Brand Logo as Header/Footer */}
             <div className="relative mb-3 flex items-center justify-center">
-              <Image
-                src={BRAND.logoDark}
-                alt={BRAND.name}
-                width={220}
-                height={98}
+              <BrandLogo
+                variant="dark"
+                size="xl"
                 priority
-                className="h-20 sm:h-24 w-auto object-contain drop-shadow-md"
+                className="justify-center"
+                imageClassName="mx-auto"
               />
             </div>
 
-            {/* Elegant center-expanding golden hairline indicator */}
-            <div className="relative mt-2 h-[1.5px] w-28 overflow-hidden rounded-full bg-sage-200/80">
+            {/* Elegant center-expanding brand line indicator */}
+            <div className="relative mt-2 h-[2px] w-32 overflow-hidden rounded-full bg-slate-200">
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
@@ -88,18 +87,18 @@ export function Preloader() {
                   duration: 1.15,
                   ease: [0.65, 0, 0.35, 1],
                 }}
-                className="h-full w-full origin-left bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300 shadow-xs"
+                className="h-full w-full origin-left bg-gradient-to-r from-[#0b1528] via-[#d92525] to-[#f9b233]"
               />
             </div>
 
-            {/* Editorial brand heritage subtitle */}
+            {/* Brand tagline subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.6, ease: luxuryEase }}
-              className="mt-3.5 text-[10px] uppercase tracking-[0.3em] text-ink/65 font-medium"
+              className="mt-3.5 text-[11px] uppercase tracking-[0.25em] text-slate-700 font-bold"
             >
-              Handcrafted Indian Elegance
+              {BRAND.tagline}
             </motion.p>
           </motion.div>
         </motion.div>

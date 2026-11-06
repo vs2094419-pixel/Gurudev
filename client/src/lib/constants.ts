@@ -10,10 +10,10 @@ export const BRAND = {
   addressShort: "102, Gangamma Temple St, Ashok Nagar, Bengaluru 560050",
   mapsUrl: "https://maps.app.goo.gl/YdfX6oYaNtGP5x5N7",
   mapsEmbedUrl: "https://maps.google.com/maps?q=1st+Floor,+GURUDEV+INFOTECH,+102,+Gangamma+Temple+St,+Ashok+Nagar,+Bengaluru,+Karnataka+560050&t=&z=16&ie=UTF8&iwloc=&output=embed",
-  logo: "/brand/logo.svg",
-  logoDark: "/brand/logo.svg",
-  logoLight: "/brand/logo-light.svg",
-  logoOriginal: "/brand/logo.svg",
+  logo: "/brand/logo.png",
+  logoDark: "/brand/logo.png",
+  logoLight: "/brand/logo.png",
+  logoOriginal: "/brand/logo.png",
 };
 
 /** Storefront / Corporate IT navigation links */

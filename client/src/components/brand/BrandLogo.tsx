@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { BRAND } from "@/lib/constants";
+import { SITE_IMAGES } from "@/lib/site-config";
 
 export interface BrandLogoProps {
   variant?: "dark" | "light" | "original";
@@ -31,7 +32,11 @@ export function BrandLogo({
   className = "",
   imageClassName = "",
 }: BrandLogoProps) {
-  const [customLogo, setCustomLogo] = useState<string | null>(null);
+  const [customLogo, setCustomLogo] = useState<string | null>(
+    SITE_IMAGES.siteLogo && SITE_IMAGES.siteLogo !== "/brand/logo.svg" && SITE_IMAGES.siteLogo !== "/brand/emblem.png"
+      ? SITE_IMAGES.siteLogo
+      : null
+  );
 
   useEffect(() => {
     fetch("/api/admin/site-images")
@@ -67,7 +72,9 @@ export function BrandLogo({
         height={config.height}
         priority={priority}
         unoptimized
-        className={`h-full w-auto max-h-full object-contain object-left select-none ${imageClassName}`}
+        className={`h-full w-auto max-h-full object-contain select-none ${
+          imageClassName.includes("object-") ? "" : "object-left"
+        } ${imageClassName}`}
       />
     </div>
   );
