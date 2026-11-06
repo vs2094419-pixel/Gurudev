@@ -9,7 +9,14 @@ function required(name: string): string {
 }
 
 function jwtSecret(): string {
-  const value = required("JWT_SECRET");
+  const value = process.env.JWT_SECRET;
+  if (!value) {
+    // Avoid crashing Next.js static build / analysis when secrets are only provided at runtime
+    if (process.env.NEXT_PHASE === "phase-production-build" || process.env.NODE_ENV === "test") {
+      return "build-time-fallback-jwt-secret-min-32-chars-long";
+    }
+    throw new Error("Missing required env var: JWT_SECRET");
+  }
   if (value.length < 32) throw new Error("JWT_SECRET must be at least 32 characters (e.g. `openssl rand -hex 32`)");
   return value;
 }
@@ -28,7 +35,9 @@ export const env = {
   clientUrl: process.env.CLIENT_URL ?? "http://localhost:3000",
   databaseUrl: process.env.DATABASE_URL ?? "",
   jwt: {
-    secret: jwtSecret(),
+    get secret(): string {
+      return jwtSecret();
+    },
     expiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
     rememberExpiresIn: process.env.JWT_REMEMBER_EXPIRES_IN ?? "30d",
   },
