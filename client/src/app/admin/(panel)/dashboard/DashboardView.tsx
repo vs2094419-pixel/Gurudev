@@ -181,7 +181,7 @@ export function DashboardView() {
                   className="flex h-14 items-center justify-center rounded-xl bg-[#0b1528] p-2 text-center"
                   title={b.name}
                 >
-                  <PartnerLogoRenderer partner={b} color="#ffffff" className="max-h-6 max-w-[65px]" />
+                  <PartnerLogoRenderer partner={b} color="#ffffff" className="h-5 sm:h-6 max-h-6 max-w-[65px] w-auto" />
                 </div>
               ))}
             </div>
@@ -218,7 +218,7 @@ export function DashboardView() {
                   className="flex h-14 items-center justify-center rounded-xl bg-[#f9b233] p-2 text-center shadow-xs"
                   title={b.name}
                 >
-                  <PartnerLogoRenderer partner={b} color="#ffffff" className="max-h-6 max-w-[65px]" />
+                  <PartnerLogoRenderer partner={b} color="#ffffff" className="h-5 sm:h-6 max-h-6 max-w-[65px] w-auto" />
                 </div>
               ))}
             </div>
@@ -255,7 +255,7 @@ export function DashboardView() {
                   className="flex h-14 items-center justify-center rounded-xl bg-[#0f1738] p-2 text-center"
                   title={b.name}
                 >
-                  <PartnerLogoRenderer partner={b} color="#ffffff" className="max-h-6 max-w-[65px]" />
+                  <PartnerLogoRenderer partner={b} color="#ffffff" className="h-5 sm:h-6 max-h-6 max-w-[65px] w-auto" />
                 </div>
               ))}
             </div>

@@ -316,7 +316,7 @@ export function PartnersManagerView({
                   <PartnerLogoRenderer
                     partner={partner}
                     color="#ffffff"
-                    className="max-h-12 max-w-[170px] w-auto drop-shadow-sm"
+                    className="h-9 sm:h-10 max-h-12 max-w-[170px] w-auto drop-shadow-sm"
                   />
                 </div>
 

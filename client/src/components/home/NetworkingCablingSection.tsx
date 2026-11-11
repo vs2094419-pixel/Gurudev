@@ -54,7 +54,7 @@ export function NetworkingCablingSection() {
                   <PartnerLogoRenderer
                     partner={brand}
                     color="#ffffff"
-                    className="max-h-12 max-w-[150px] w-auto drop-shadow-xs"
+                    className="h-8 sm:h-10 max-h-12 max-w-[150px] w-auto drop-shadow-xs"
                   />
                 </div>
               ))}

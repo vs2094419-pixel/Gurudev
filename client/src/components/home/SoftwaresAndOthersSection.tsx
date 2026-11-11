@@ -70,7 +70,7 @@ export function SoftwaresAndOthersSection() {
                   <PartnerLogoRenderer
                     partner={brand}
                     color="#ffffff"
-                    className="max-h-10 max-w-[140px] w-auto drop-shadow-xs"
+                    className="h-7 sm:h-8 max-h-10 max-w-[140px] w-auto drop-shadow-xs"
                   />
                 </div>
               ))}

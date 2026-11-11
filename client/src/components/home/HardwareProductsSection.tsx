@@ -69,7 +69,7 @@ export function HardwareProductsSection() {
                       <PartnerLogoRenderer
                         partner={brand}
                         color="#ffffff"
-                        className="max-h-10 max-w-[110px] w-auto"
+                        className="h-8 sm:h-9 max-h-10 max-w-[110px] w-auto"
                       />
                     </div>
                   </div>

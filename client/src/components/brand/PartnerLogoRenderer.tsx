@@ -11,11 +11,16 @@ interface PartnerLogoProps {
 export function PartnerLogoRenderer({
   partner,
   color = "#ffffff",
-  className = "max-h-10 max-w-[130px] w-auto",
+  className = "h-8 sm:h-9 max-h-10 max-w-[130px] w-auto",
 }: PartnerLogoProps) {
+  // Ensure an explicit height is present so inline SVGs never collapse to 0 height in flex containers
+  const effectiveClass = /\bh-|\bh\[/.test(className)
+    ? className
+    : `h-8 sm:h-9 ${className}`;
+
   if (partner.svgKey && SVG_LOGO_MAP[partner.svgKey]) {
     const Component = SVG_LOGO_MAP[partner.svgKey];
-    return <Component color={color} className={className} />;
+    return <Component color={color} className={effectiveClass} />;
   }
 
   if (partner.logoUrl) {
@@ -23,7 +28,7 @@ export function PartnerLogoRenderer({
       <img
         src={partner.logoUrl}
         alt={partner.name}
-        className={`${className} object-contain`}
+        className={`${effectiveClass} object-contain`}
       />
     );
   }
