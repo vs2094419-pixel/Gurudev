@@ -66,11 +66,11 @@ export function ContactCtaSection() {
                   <Phone className="h-5 w-5" />
                 </div>
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">Phone Support</h3>
-                <div className="mt-1 flex flex-col text-sm font-bold text-white">
-                  <a href={`tel:${BRAND.phone.replace(/\s+/g, "")}`} className="hover:text-[#f9b233]">
+                <div className="mt-1 flex flex-col space-y-0.5 text-sm font-bold text-white">
+                  <a href={`tel:${BRAND.phone.replace(/\s+/g, "")}`} className="hover:text-[#f9b233] transition-colors">
                     {BRAND.phone}
                   </a>
-                  <a href={`tel:${BRAND.phoneSecondary.replace(/\s+/g, "")}`} className="text-xs text-slate-300 hover:text-[#f9b233]">
+                  <a href={`tel:${BRAND.phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-[#f9b233] transition-colors">
                     {BRAND.phoneSecondary}
                   </a>
                 </div>

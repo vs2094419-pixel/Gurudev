@@ -63,7 +63,7 @@ export default function ContactPage() {
                 <div>
                   <a
                     href={`tel:${BRAND.phoneSecondary.replace(/\s+/g, "")}`}
-                    className="hover:text-[#d92525] transition-colors text-slate-600"
+                    className="hover:text-[#d92525] transition-colors"
                   >
                     {BRAND.phoneSecondary}
                   </a>
