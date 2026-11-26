@@ -1,25 +1,11 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import defaultPartners from "@/lib/partners.json";
-import type { PartnersStore } from "@/lib/partners-config";
+import { getPartnersStore } from "@/lib/partners-db";
 
-const PARTNERS_FILE = path.join(process.cwd(), "src", "lib", "partners.json");
-
-function getPartners(): PartnersStore {
-  try {
-    if (fs.existsSync(PARTNERS_FILE)) {
-      const data = fs.readFileSync(PARTNERS_FILE, "utf-8");
-      return JSON.parse(data);
-    }
-  } catch (err) {
-    console.error("Error reading partners.json:", err);
-  }
-  return defaultPartners as PartnersStore;
-}
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const all = getPartners();
+  const all = await getPartnersStore();
   // Filter active and sort
   const active = {
     hardware: (all.hardware || []).filter((p) => p.isActive).sort((a, b) => a.sortOrder - b.sortOrder),

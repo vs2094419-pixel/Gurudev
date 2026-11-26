@@ -11,6 +11,7 @@ export async function listBanners(q: ListQuery) {
   const where: Prisma.BannerWhereInput = {
     ...(q.q ? { title: { contains: q.q, mode: "insensitive" } } : {}),
     ...(q.isActive !== undefined ? { isActive: q.isActive } : {}),
+    NOT: { title: { startsWith: "__" } },
   };
   const [items, total] = await Promise.all([
     prisma.banner.findMany({ where, orderBy: [toOrderBy(q.sort), { id: "asc" }], ...toSkipTake(q) }),

@@ -43,8 +43,9 @@ export function BrandLogo({
       .then((res) => res.json())
       .then((json) => {
         if (json.success && json.data?.siteLogo) {
-          if (json.data.siteLogo !== "/brand/logo.svg" && json.data.siteLogo !== "/brand/emblem.png") {
-            setCustomLogo(json.data.siteLogo);
+          const logo = json.data.siteLogo;
+          if (logo && logo.trim() && logo !== "/brand/logo.svg") {
+            setCustomLogo(logo);
           }
         }
       })
