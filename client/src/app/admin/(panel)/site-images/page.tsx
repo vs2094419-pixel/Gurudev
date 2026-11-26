@@ -201,7 +201,15 @@ export default function SiteImagesPage() {
       });
       const json = await res.json();
       if (json.success) {
+        if (siteLogo) {
+          try {
+            localStorage.setItem("gi_site_logo", siteLogo);
+          } catch {}
+        }
         if (tabIcon) {
+          try {
+            localStorage.setItem("gi_tab_icon", tabIcon);
+          } catch {}
           updateBrowserFavicon(tabIcon);
         }
         toast.success("Website Logo & Tab Strip Icon updated successfully!");

@@ -32,11 +32,13 @@ export function BrandLogo({
   className = "",
   imageClassName = "",
 }: BrandLogoProps) {
-  const [customLogo, setCustomLogo] = useState<string | null>(
-    SITE_IMAGES.siteLogo && SITE_IMAGES.siteLogo !== "/brand/logo.svg" && SITE_IMAGES.siteLogo !== "/brand/emblem.png"
-      ? SITE_IMAGES.siteLogo
-      : null
-  );
+  const [customLogo, setCustomLogo] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("gi_site_logo");
+      if (cached && cached.trim()) return cached;
+    }
+    return SITE_IMAGES.siteLogo || BRAND.logoDark;
+  });
 
   useEffect(() => {
     fetch("/api/admin/site-images")
@@ -46,6 +48,9 @@ export function BrandLogo({
           const logo = json.data.siteLogo;
           if (logo && logo.trim() && logo !== "/brand/logo.svg") {
             setCustomLogo(logo);
+            try {
+              localStorage.setItem("gi_site_logo", logo);
+            } catch {}
           }
         }
       })

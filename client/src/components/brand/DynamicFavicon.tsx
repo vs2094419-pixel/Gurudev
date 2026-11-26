@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { SITE_IMAGES } from "@/lib/site-config";
 
 export function updateBrowserFavicon(iconUrl: string) {
   if (!iconUrl || typeof document === "undefined") return;
@@ -35,6 +36,14 @@ export function updateBrowserFavicon(iconUrl: string) {
 
 export function DynamicFavicon() {
   useEffect(() => {
+    // 1. Immediately apply cached or default tab icon (0ms delay!)
+    const cached = typeof window !== "undefined" ? localStorage.getItem("gi_tab_icon") : null;
+    const initialIcon = cached || SITE_IMAGES.tabIcon;
+    if (initialIcon) {
+      updateBrowserFavicon(initialIcon);
+    }
+
+    // 2. Fetch fresh from DB and update cache
     fetch("/api/admin/site-images")
       .then((res) => res.json())
       .then((json) => {
@@ -42,6 +51,9 @@ export function DynamicFavicon() {
           const tabIcon = json.data.tabIcon || json.data.siteLogo;
           if (tabIcon && tabIcon.trim()) {
             updateBrowserFavicon(tabIcon);
+            try {
+              localStorage.setItem("gi_tab_icon", tabIcon);
+            } catch {}
           }
         }
       })
