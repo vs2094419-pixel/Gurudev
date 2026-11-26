@@ -2,6 +2,7 @@ import defaultImages from "./site-images.json";
 
 export interface SiteImagesConfig {
   siteLogo: string;
+  tabIcon: string;
   aboutImage: string;
   staffingImage: string;
   supportImage: string;
@@ -10,7 +11,8 @@ export interface SiteImagesConfig {
 }
 
 export const SITE_IMAGES: SiteImagesConfig = {
-  siteLogo: (defaultImages as Record<string, string>).siteLogo || "/brand/logo.svg",
+  siteLogo: (defaultImages as Record<string, string>).siteLogo || "/brand/logo.png",
+  tabIcon: (defaultImages as Record<string, string>).tabIcon || "/icon.png",
   aboutImage: defaultImages.aboutImage || "/images/corporate/about-team.png",
   staffingImage: defaultImages.staffingImage || "/images/corporate/about-team.png",
   supportImage: defaultImages.supportImage || "/images/corporate/tech-support.jpg",

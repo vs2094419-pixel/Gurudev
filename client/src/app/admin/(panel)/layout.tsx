@@ -1,6 +1,7 @@
 import { AdminSessionProvider } from "@/components/admin/AdminSession";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ToastProvider } from "@/components/admin/Toast";
+import { DynamicFavicon } from "@/components/brand/DynamicFavicon";
 
 export const metadata = {
   title: { default: "Admin", template: "%s · Admin | Gurudev InfoTech" },
@@ -17,6 +18,7 @@ export default function AdminPanelLayout({ children }: LayoutProps<"/admin">) {
   return (
     <ToastProvider>
       <AdminSessionProvider>
+        <DynamicFavicon />
         <AdminShell>{children}</AdminShell>
       </AdminSessionProvider>
     </ToastProvider>

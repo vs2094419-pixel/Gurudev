@@ -70,6 +70,7 @@ export async function POST(req: Request) {
 
     const updated: SiteImagesConfig = {
       siteLogo: body.siteLogo ?? current.siteLogo ?? "/brand/logo.png",
+      tabIcon: body.tabIcon ?? current.tabIcon ?? "/icon.png",
       aboutImage: body.aboutImage ?? current.aboutImage,
       staffingImage: body.staffingImage ?? current.staffingImage,
       supportImage: body.supportImage ?? current.supportImage,

@@ -6,6 +6,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { Preloader } from "@/components/ui/Preloader";
+import { DynamicFavicon } from "@/components/brand/DynamicFavicon";
 
 export function StoreProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export function StoreProviders({ children }: { children: React.ReactNode }) {
         <CartProvider>
           <WishlistProvider>
             <Preloader />
+            <DynamicFavicon />
             {children}
           </WishlistProvider>
         </CartProvider>

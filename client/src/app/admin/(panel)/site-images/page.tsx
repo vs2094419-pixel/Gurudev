@@ -12,6 +12,7 @@ import { SingleImageUpload } from "@/components/admin/SingleImageUpload";
 import { useToast } from "@/components/admin/Toast";
 import { GripIcon, CheckIcon } from "@/components/admin/icons";
 import { card, cx } from "@/components/admin/styles";
+import { updateBrowserFavicon } from "@/components/brand/DynamicFavicon";
 
 interface SectionPhotoItem {
   id: string;
@@ -40,10 +41,11 @@ export default function SiteImagesPage() {
   const toast = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [savingLogo, setSavingLogo] = useState(false);
+  const [savingBranding, setSavingBranding] = useState(false);
 
-  // Logo state
-  const [siteLogo, setSiteLogo] = useState("/brand/emblem.png");
+  // Branding state
+  const [siteLogo, setSiteLogo] = useState("/brand/logo.png");
+  const [tabIcon, setTabIcon] = useState("/icon.png");
 
   const [cards, setCards] = useState<SectionPhotoItem[]>([
     {
@@ -116,6 +118,9 @@ export default function SiteImagesPage() {
           if (json.data.siteLogo) {
             setSiteLogo(json.data.siteLogo);
           }
+          if (json.data.tabIcon) {
+            setTabIcon(json.data.tabIcon);
+          }
           setCards((prev) =>
             prev.map((c) => ({
               ...c,
@@ -163,7 +168,7 @@ export default function SiteImagesPage() {
   const saveToServer = async (cardList: SectionPhotoItem[]) => {
     setSaving(true);
     try {
-      const payload: Record<string, string> = { siteLogo };
+      const payload: Record<string, string> = { siteLogo, tabIcon };
       cardList.forEach((c) => {
         payload[c.key] = c.currentUrl;
       });
@@ -186,24 +191,27 @@ export default function SiteImagesPage() {
     }
   };
 
-  const handleSaveLogo = async () => {
-    setSavingLogo(true);
+  const handleSaveBranding = async () => {
+    setSavingBranding(true);
     try {
       const res = await fetch("/api/admin/site-images", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ siteLogo }),
+        body: JSON.stringify({ siteLogo, tabIcon }),
       });
       const json = await res.json();
       if (json.success) {
-        toast.success("Website Logo updated successfully!");
+        if (tabIcon) {
+          updateBrowserFavicon(tabIcon);
+        }
+        toast.success("Website Logo & Tab Strip Icon updated successfully!");
       } else {
-        toast.error("Failed to update logo");
+        toast.error("Failed to update branding");
       }
     } catch {
-      toast.error("An error occurred while saving logo");
+      toast.error("An error occurred while saving branding");
     } finally {
-      setSavingLogo(false);
+      setSavingBranding(false);
     }
   };
 
@@ -215,38 +223,100 @@ export default function SiteImagesPage() {
         description="Manage the primary corporate photos and website branding. Attach photo files directly from your computer."
       />
 
-      {/* Website Logo Management Card */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4">
+      {/* Website Logo & Tab Strip Branding Card */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
           <div>
             <h2 className="font-display text-xl font-bold text-slate-900">
-              Website Logo &amp; Branding
+              Website Logo &amp; Tab Strip Branding
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              This logo is displayed in the website header, footer, mobile navigation, and browser favicon.
+              Customize both your main website logo and the browser tab strip icon (favicon).
             </p>
           </div>
           <Button
             type="button"
             variant="primary"
             size="sm"
-            loading={savingLogo}
-            onClick={handleSaveLogo}
+            loading={savingBranding}
+            onClick={handleSaveBranding}
           >
             <CheckIcon className="h-4 w-4 mr-1.5" />
-            Save &amp; Apply Logo
+            Save &amp; Apply Branding
           </Button>
         </div>
 
-        <div className="max-w-xl">
-          <SingleImageUpload
-            label="Upload Custom Website Logo"
-            value={siteLogo}
-            onChange={setSiteLogo}
-            aspectRatio="16/9"
-            previewBg="bg-white"
-            hint="Attach horizontal logo or emblem (PNG, SVG, or WebP up to 5 MB)."
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Main Website Logo */}
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#0b1528] text-[10px] font-bold text-white">1</span>
+                Main Website Logo
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Displayed in the website header navbar, footer, mobile navigation, and loading screen.
+              </p>
+            </div>
+            <SingleImageUpload
+              label="Upload Company Logo"
+              value={siteLogo}
+              onChange={setSiteLogo}
+              aspectRatio="16/9"
+              previewBg="bg-white"
+              hint="Attach horizontal logo or emblem (PNG, SVG, or WebP up to 5 MB)."
+            />
+          </div>
+
+          {/* Browser Tab Strip Logo (Favicon) */}
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d92525] text-[10px] font-bold text-white">2</span>
+                Browser Tab Strip Logo (Favicon)
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Small icon displayed on browser tabs, bookmarks, and mobile shortcut icons.
+              </p>
+            </div>
+
+            <SingleImageUpload
+              label="Upload Tab Strip Logo (Favicon)"
+              value={tabIcon}
+              onChange={(url) => {
+                setTabIcon(url);
+                if (url) updateBrowserFavicon(url);
+              }}
+              aspectRatio="1/1"
+              previewBg="bg-white"
+              hint="Square icon recommended (1:1 ratio, e.g. 32×32 to 512×512 px PNG, ICO, SVG)."
+            />
+
+            {/* Live Browser Tab Strip Preview */}
+            <div className="mt-3 rounded-xl border border-slate-800 bg-[#1e2430] p-3 text-white">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-2">
+                Live Browser Tab Strip Preview
+              </span>
+              <div className="inline-flex items-center gap-2 rounded-t-lg bg-[#2e3748] px-3.5 py-1.5 border-t border-x border-slate-600 max-w-full shadow-sm">
+                <div className="relative h-4 w-4 shrink-0 rounded overflow-hidden bg-white/20 flex items-center justify-center">
+                  {tabIcon ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={tabIcon}
+                      alt="Tab Icon Preview"
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <span className="text-[10px] font-bold text-amber-400">GI</span>
+                  )}
+                </div>
+                <span className="text-xs font-medium text-slate-200 truncate max-w-[210px]">
+                  Gurudev InfoTech — Total IT Solutions
+                </span>
+                <span className="text-xs text-slate-400 ml-1">×</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
