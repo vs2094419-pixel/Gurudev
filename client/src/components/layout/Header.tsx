@@ -42,10 +42,10 @@ export function Header() {
 
   return (
     <>
-      {/* Luxury gold scroll progress indicator */}
+      {/* Brand blue scroll progress indicator */}
       <motion.div
         style={{ scaleX }}
-        className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#f9b233] via-[#d92525] to-[#f9b233] origin-left z-50 pointer-events-none"
+        className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#0b256b] via-[#0047ba] to-[#f9b233] origin-left z-50 pointer-events-none"
       />
 
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-xs">
@@ -128,9 +128,9 @@ export function Header() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`relative py-1 transition-colors hover:text-[#d92525] ${
+                  className={`relative py-1 transition-colors hover:text-[#0b256b] ${
                     isActive
-                      ? "text-[#d92525] font-extrabold"
+                      ? "text-[#0b256b] font-extrabold"
                       : "text-slate-700"
                   }`}
                 >
@@ -145,7 +145,7 @@ export function Header() {
             {/* Direct Get Quote CTA Button */}
             <Link
               href="/contact"
-              className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-[#0b1528] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#d92525] hover:shadow-md"
+              className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-[#0b1528] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#0b256b] hover:shadow-md"
             >
               <span>Get Quote</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -159,7 +159,7 @@ export function Header() {
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-800 hover:border-[#f9b233] hover:text-[#0b1528] cursor-pointer transition-colors shadow-2xs"
                 >
-                  <User className="h-4 w-4 text-[#d92525]" />
+                  <User className="h-4 w-4 text-[#0b256b]" />
                   <span className="hidden sm:inline font-bold">Admin</span>
                   <ChevronDown className="h-3 w-3 opacity-60" />
                 </button>
@@ -188,7 +188,7 @@ export function Header() {
                       <Link
                         href="/admin/site-images"
                         onClick={() => setIsUserMenuOpen(false)}
-                        className="block rounded-lg px-3 py-2 font-medium text-[#d92525] hover:bg-rose-50 transition-colors"
+                        className="block rounded-lg px-3 py-2 font-medium text-[#0b256b] hover:bg-blue-50 transition-colors"
                       >
                         Site Photos Manager
                       </Link>
@@ -251,7 +251,7 @@ export function Header() {
                 <Link
                   href="/"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="py-1 text-slate-800 hover:text-[#d92525]"
+                  className="py-1 text-slate-800 hover:text-[#0b256b]"
                 >
                   Home
                 </Link>
@@ -260,7 +260,7 @@ export function Header() {
                     key={link.label}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-1 text-slate-800 hover:text-[#d92525]"
+                    className="py-1 text-slate-800 hover:text-[#0b256b]"
                   >
                     {link.label}
                   </Link>
@@ -286,7 +286,7 @@ export function Header() {
                   href={BRAND.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-[11px] text-slate-500 hover:text-[#d92525]"
+                  className="block text-[11px] text-slate-500 hover:text-[#0b256b]"
                 >
                   {BRAND.address}
                 </a>

@@ -21,7 +21,7 @@ export function HeroSection() {
     <section className="relative overflow-hidden bg-gradient-to-br from-[#070d1e] via-[#0b1528] to-[#111e3b] text-white pt-10 pb-16 md:pt-16 md:pb-24">
       {/* Background ambient lighting */}
       <div className="absolute top-0 right-1/4 -z-10 h-96 w-96 rounded-full bg-[#f9b233]/10 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 -z-10 h-80 w-80 rounded-full bg-[#d92525]/10 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 -z-10 h-80 w-80 rounded-full bg-[#0b256b]/20 blur-3xl pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

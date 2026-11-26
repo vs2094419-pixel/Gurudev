@@ -58,7 +58,7 @@ export function Preloader() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 0.35, scale: 1.15 }}
             transition={{ duration: 1.2, ease: luxuryEase }}
-            className="pointer-events-none absolute h-[320px] w-[320px] rounded-full bg-gradient-to-tr from-[#0b1528]/10 via-[#d92525]/10 to-[#f9b233]/15 blur-3xl"
+            className="pointer-events-none absolute h-[320px] w-[320px] rounded-full bg-gradient-to-tr from-[#0b1528]/15 via-[#0b256b]/20 to-[#f9b233]/15 blur-3xl"
           />
 
           <motion.div
@@ -87,7 +87,7 @@ export function Preloader() {
                   duration: 1.15,
                   ease: [0.65, 0, 0.35, 1],
                 }}
-                className="h-full w-full origin-left bg-gradient-to-r from-[#0b1528] via-[#d92525] to-[#f9b233]"
+                className="h-full w-full origin-left bg-gradient-to-r from-[#0b1528] via-[#0b256b] to-[#f9b233]"
               />
             </div>
 

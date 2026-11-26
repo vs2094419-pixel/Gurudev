@@ -29,20 +29,24 @@ export function SupportServicesSection() {
           transition={{ duration: 0.6 }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"
         >
-          {/* Left Column: Large Red Background Card with White Typography & Checkmarks */}
-          <div className="lg:col-span-7 flex flex-col justify-center rounded-3xl bg-[#d92525] p-8 sm:p-12 md:p-14 text-white shadow-xl transition-transform duration-300 hover:shadow-2xl">
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
+          {/* Left Column: Large Card in Logo Corporate Blue with White Typography & Checkmarks */}
+          <div className="lg:col-span-7 flex flex-col justify-center rounded-3xl bg-gradient-to-br from-[#071842] via-[#0b256b] to-[#003da5] p-8 sm:p-12 md:p-14 text-white shadow-xl transition-transform duration-300 hover:shadow-2xl relative overflow-hidden">
+            {/* Subtle high-tech ambient glow */}
+            <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-cyan-400/15 blur-3xl" />
+            <div className="pointer-events-none absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-blue-400/10 blur-3xl" />
+
+            <h2 className="relative z-10 font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-8">
               Support &amp; Services
             </h2>
 
-            <ul className="space-y-4">
+            <ul className="relative z-10 space-y-4">
               {SUPPORT_SERVICES_LIST.map((item, index) => (
                 <li
                   key={index}
                   className="flex items-center gap-3.5 text-sm sm:text-base font-semibold text-white transition-transform duration-200 hover:translate-x-1"
                 >
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-[#d92525] shadow-sm">
-                    <CheckCircle2 className="h-4 w-4 fill-white text-[#d92525]" />
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-[#0b256b] shadow-sm">
+                    <CheckCircle2 className="h-4 w-4 fill-white text-[#0b256b]" />
                   </div>
                   <span>{item}</span>
                 </li>

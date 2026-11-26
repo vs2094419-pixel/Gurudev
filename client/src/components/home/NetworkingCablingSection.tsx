@@ -33,9 +33,9 @@ export function NetworkingCablingSection() {
           transition={{ duration: 0.6 }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch"
         >
-          {/* Left Column: White Card with Red Border & Centered Red Heading */}
-          <div className="lg:col-span-5 flex items-center justify-center rounded-3xl bg-white border-[3px] border-[#d92525] p-8 sm:p-12 md:p-14 text-center shadow-md transition-transform duration-300 hover:shadow-lg">
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#d92525] leading-snug tracking-tight">
+          {/* Left Column: White Card with Logo Corporate Blue Border & Centered Heading */}
+          <div className="lg:col-span-5 flex items-center justify-center rounded-3xl bg-white border-[3px] border-[#0b256b] p-8 sm:p-12 md:p-14 text-center shadow-md transition-transform duration-300 hover:shadow-lg">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0b256b] leading-snug tracking-tight">
               Networking &amp;<br />
               Structured Cabling<br />
               Installation &amp; Support

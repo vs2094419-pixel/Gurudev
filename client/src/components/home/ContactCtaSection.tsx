@@ -19,7 +19,7 @@ export function ContactCtaSection() {
         >
           {/* Subtle Ambient highlights */}
           <div className="absolute top-0 right-0 -z-0 h-80 w-80 rounded-full bg-[#f9b233]/10 blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 -z-0 h-80 w-80 rounded-full bg-[#d92525]/10 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 -z-0 h-80 w-80 rounded-full bg-[#0b256b]/20 blur-3xl pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -77,7 +77,7 @@ export function ContactCtaSection() {
               </div>
 
               <div className="rounded-2xl bg-white/5 border border-white/10 p-5 backdrop-blur-md">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#d92525]/20 text-[#f87171] mb-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0b256b]/30 text-[#93c5fd] mb-3">
                   <Mail className="h-5 w-5" />
                 </div>
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">Email Inquiries</h3>
