@@ -5,16 +5,32 @@ import { useEffect } from "react";
 export function updateBrowserFavicon(iconUrl: string) {
   if (!iconUrl || typeof document === "undefined") return;
 
-  const rels = ["icon", "shortcut icon", "apple-touch-icon"];
-  rels.forEach((rel) => {
-    let link = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = rel;
-      document.head.appendChild(link);
-    }
-    link.href = iconUrl;
-  });
+  // Add timestamp query parameter so Google Chrome ignores its local favicon cache
+  const cacheBuster = iconUrl.includes("?") ? `&t=${Date.now()}` : `?t=${Date.now()}`;
+  const finalUrl = iconUrl.startsWith("data:") ? iconUrl : `${iconUrl}${cacheBuster}`;
+
+  // 1. Remove all existing favicon and icon link elements
+  const existingLinks = document.querySelectorAll("link[rel*='icon']");
+  existingLinks.forEach((el) => el.remove());
+
+  // 2. Append fresh <link rel="icon">
+  const link = document.createElement("link");
+  link.rel = "icon";
+  link.type = iconUrl.endsWith(".svg") ? "image/svg+xml" : "image/png";
+  link.href = finalUrl;
+  document.head.appendChild(link);
+
+  // 3. Append fresh <link rel="shortcut icon">
+  const shortcut = document.createElement("link");
+  shortcut.rel = "shortcut icon";
+  shortcut.href = finalUrl;
+  document.head.appendChild(shortcut);
+
+  // 4. Append fresh <link rel="apple-touch-icon">
+  const apple = document.createElement("link");
+  apple.rel = "apple-touch-icon";
+  apple.href = finalUrl;
+  document.head.appendChild(apple);
 }
 
 export function DynamicFavicon() {

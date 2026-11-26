@@ -26,12 +26,10 @@ export const metadata: Metadata = {
     "GURUDEV INFOTECH provides complete corporate IT solutions including Hardware & Software Supply, Network Solutions, Structured Cabling, Stationery & Consumables, and 24/7 Managed Services since 1998.",
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/icon.png", type: "image/png" },
+      { url: "/api/favicon" },
     ],
-    apple: [
-      { url: "/icon.png" },
-    ],
+    shortcut: "/api/favicon",
+    apple: "/api/favicon",
   },
 };
 

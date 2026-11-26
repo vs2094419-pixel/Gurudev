@@ -6,7 +6,7 @@ import { DynamicFavicon } from "@/components/brand/DynamicFavicon";
 export const metadata = {
   title: { default: "Admin", template: "%s · Admin | Gurudev InfoTech" },
   robots: { index: false, follow: false },
-  icons: { icon: "/favicon.ico", apple: "/icon.png" },
+  icons: { icon: "/api/favicon", shortcut: "/api/favicon", apple: "/api/favicon" },
 };
 
 /**
